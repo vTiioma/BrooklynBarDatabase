@@ -1,0 +1,8 @@
+{
+  "name": "brooklynBarDatabase",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.15.0",
+    "mysql": "^2.13.0"
+  }
+}
