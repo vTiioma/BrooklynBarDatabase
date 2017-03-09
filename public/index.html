@@ -7,6 +7,7 @@
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
 
   <title>Brooklyn Bar Database</title>
 </head>
@@ -17,12 +18,36 @@
 
   <div class="container" ng-controller="AppCtrl">
     <h1>Brooklyn Bar Database</h1>
-    <table class="table">
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><i class="fa fa-search"></i></div>
+          <input type="text" class="form-control" placeholder="Search for bar" ng-model="searchBar">
+        </div>
+      </div>
+    </form>
+
+    <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Number</th>
-          <th>Address</th>
+          <th style="cursor:pointer;" ng-click="sortData('name')">
+            Name
+            <span ng-show="sortType != 'name'" class="fa fa-fw fa-sort"></span>
+            <span ng-show="sortType === 'name' && !reverseSort" class="fa fa-fw fa-sort-desc"></span>
+            <span ng-show="sortType === 'name' && reverseSort" class="fa fa-fw fa-sort-asc"></span>
+          </th>
+          <th style="cursor:pointer;" ng-click="sortData('number')">
+            Number
+            <span ng-show="sortType != 'number'" class="fa fa-fw fa-sort"></span>
+            <span ng-show="sortType === 'number' && !reverseSort" class="fa fa-fw fa-sort-desc"></span>
+            <span ng-show="sortType === 'number' && reverseSort" class="fa fa-fw fa-sort-asc"></span>
+          </th>
+          <th style="cursor:pointer;" ng-click="sortData('address')">
+            Address
+            <span ng-show="sortType != 'address'" class="fa fa-fw fa-sort"></span>
+            <span ng-show="sortType === 'address' && !reverseSort" class="fa fa-fw fa-sort-desc"></span>
+            <span ng-show="sortType === 'address' && reverseSort" class="fa fa-fw fa-sort-asc"></span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -31,11 +56,13 @@
           <td><input class="form-control" ng-model="bar.number"/></td>
           <td><input class="form-control" ng-model="bar.address"/></td>
           <td><button class="btn btn-primary" ng-click="addBarToDB()">Add Bar</button></td>
+          <td><button class="btn btn-info" ng-click="console.log('test')">Update</button></td>
         </tr>
-        <tr ng-repeat="bar in barlist">
+        <tr ng-repeat="bar in barlist | orderBy:sortType:reverseSort | filter:searchBar">
           <td>{{bar.name}}</td>
-          <td>{{bar.number}}</td>
+          <td>{{bar.number | tel}}</td>
           <td>{{bar.address}}</td>
+          <td><button class="btn btn-danger" ng-click="remove(bar.id)">Remove</button></td>
         </tr>
       </tbody>
     </table>
