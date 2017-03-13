@@ -32,30 +32,30 @@ app.get('/barlist', function (req,res) {
     }
     db.release();
   });
-
-  // bar1 = {
-  //   name: "First Bar",
-  //   number: "(111) 111-1111",
-  //   address: "123 Fake st."
-  // };
-  //
-  // bar2 = {
-  //   name: "Second Bar",
-  //   number: "(222) 222-2222",
-  //   address: "456 Fake st."
-  // };
-  //
-  // bar3 = {
-  //   name: "Third Bar",
-  //   number: "(333) 333-3333",
-  //   address: "789 Fake st."
-  // };
-  //
-  // var barlist = [bar1,bar2,bar3];
-  // res.json(barlist);
 });
 
-app.post('/barlist', function (req,res) {
+app.get('/barlist/:id', function(req,res) {
+  var id = req.params.id;
+  console.log(id);
+  connection.getConnection(function(error,db) {
+    if (error === null) {
+      console.log("Connected!");
+      db.query("SELECT * FROM barInfo WHERE id=? LIMIT 1", [id], function(error,doc) {
+        if (error === null) {
+          console.log("Query successful.");
+          res.json(doc);
+        } else {
+          console.log("Query failed.");
+        }
+      });
+    } else {
+      console.log("Error!");
+    }
+    db.release();
+  });
+});
+
+app.post('/barlist', function(req,res) {
   console.log(req.body);
   connection.getConnection(function(error,db) {
     if (error === null) {
@@ -77,7 +77,28 @@ app.post('/barlist', function (req,res) {
   });
 });
 
-app.delete('/barlist/:id', function (req,res) {
+app.put('/barlist/:id', function(req,res) {
+  console.log(req.body);
+  connection.getConnection(function(error,db) {
+    if (error === null) {
+      console.log("Connected!");
+      db.query("UPDATE `barinfo` SET `name`=?,`number`=?,`address`=? WHERE id=?",
+      [req.body.name, req.body.number, req.body.address, req.params.id],
+      function(error,doc) {
+        if (error === null) {
+          console.log("Query successful.");
+          res.json(doc);
+        } else {
+          console.log("Query failed. " + error);
+        }
+      });
+    } else {
+      console.log("Error!");
+    }
+  });
+});
+
+app.delete('/barlist/:id', function(req,res) {
   var id = req.params.id;
   //console.log(id);
   connection.getConnection(function(error,db) {

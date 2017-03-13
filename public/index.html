@@ -56,13 +56,16 @@
           <td><input class="form-control" ng-model="bar.number"/></td>
           <td><input class="form-control" ng-model="bar.address"/></td>
           <td><button class="btn btn-primary" ng-click="addBarToDB()">Add Bar</button></td>
-          <td><button class="btn btn-info" ng-click="console.log('test')">Update</button></td>
+          <td><button class="btn btn-info" ng-click="update()">Update</button>
+            &nbsp;&nbsp;
+          <button class="btn btn-info" ng-click="deselect()">Clear</button></td>
         </tr>
         <tr ng-repeat="bar in barlist | orderBy:sortType:reverseSort | filter:searchBar">
           <td>{{bar.name}}</td>
           <td>{{bar.number | tel}}</td>
           <td>{{bar.address}}</td>
           <td><button class="btn btn-danger" ng-click="remove(bar.id)">Remove</button></td>
+          <td><button class="btn btn-warning" ng-click="edit(bar.id)">Edit</button></td>
         </tr>
       </tbody>
     </table>

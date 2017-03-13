@@ -23,6 +23,10 @@ barApp.controller('AppCtrl',['$scope','$http',
       );
     }
 
+    $scope.deselect = function() {
+      $scope.bar = null;
+    }
+
     $scope.addBarToDB = function() {
       console.log($scope.bar);
       $http.post('/barlist', $scope.bar).then(
@@ -38,6 +42,24 @@ barApp.controller('AppCtrl',['$scope','$http',
       $http.delete('/barlist/'+id).then(
         function(response) {
           console.log("test");
+          refresh();
+        }
+      );
+    }
+
+    $scope.edit = function(id) {
+      console.log(id);
+      $http.get('/barlist/'+id).then(
+        function(response) {
+          console.log(response);
+          $scope.bar = response.data[0];
+        }
+      );
+    }
+
+    $scope.update = function() {
+      $http.put('/barlist/'+$scope.bar.id, $scope.bar).then(
+        function(response) {
           refresh();
         }
       );
